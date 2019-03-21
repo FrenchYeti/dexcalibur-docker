@@ -3,6 +3,12 @@ A quick way to test Dexcalibur
 
 ## Quick start 
 
+Get the container
+
+```
+docker push frenchyeti/dexcalibur:latest
+```
+
 If your rooted device is connected (by USB) and the targeted app <TARGET> install on this device. 
 Use the following command :
   
