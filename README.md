@@ -6,7 +6,7 @@ A quick way to test Dexcalibur
 Get the container
 
 ```
-docker push frenchyeti/dexcalibur:latest
+docker pull frenchyeti/dexcalibur:latest
 ```
 
 If your rooted device is connected (by USB) and the targeted app <TARGET> install on this device. 
