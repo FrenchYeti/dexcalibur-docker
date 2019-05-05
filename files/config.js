@@ -10,10 +10,11 @@ module.exports = {
     
     // ADB location
     adbPath: "/home/dexcalibur/platform-tools/platform-tools/adb",
-    androidSdkPath: "/opt/android_sdk/",
+    // androidSdkPath is useless for this Docker image (Android SDK not installed)
+    androidSdkPath: "/home/dexcalibur/platform-tools/",
 
     // APKTool location
-    apktPath: "/home/dexcalibur/apktool",
+    apktPath: "/usr/local/bin/apktool",//"/home/dexcalibur/apktool",
 
     // Optional : SDB location
     sdbPath: null,

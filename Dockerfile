@@ -12,7 +12,8 @@ RUN dpkg --add-architecture i386 && \
     apt-get update -y && \
     apt-get install -y libncurses5:i386 libc6:i386 libstdc++6:i386 lib32gcc1 lib32ncurses5 lib32z1 zlib1g:i386 && \
     apt-get install -y --no-install-recommends openjdk-8-jdk && \
-    apt-get install -y git wget zip curl
+    apt-get install -y git wget zip curl && \
+	apt-get install -y usbutils
 
 RUN	curl -sL https://deb.nodesource.com/setup_11.x  | bash -
 RUN apt-get update -y && \
@@ -32,18 +33,19 @@ RUN cd /opt && \
 
 # download and install Android SDK
 # https://developer.android.com/studio/#downloads
-ARG ANDROID_SDK_VERSION=4333796
-RUN mkdir -p /opt/android-sdk && cd /opt/android-sdk && \
-    wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip && \
-    unzip *tools*linux*.zip && \
-    rm *tools*linux*.zip
+# ARG ANDROID_SDK_VERSION=4333796
+# RUN mkdir -p /opt/android-sdk && cd /opt/android-sdk && \
+# 	wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip && \
+#	unzip *tools*linux*.zip && \
+#	rm *tools*linux*.zip
 
 
 # set the environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV GRADLE_HOME /opt/gradle
 ENV ANDROID_HOME /opt/android-sdk
-ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin
+# ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin
+ENV PATH ${PATH}:${GRADLE_HOME}/bin
 ENV _JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
 
 # accept the license agreements of the SDK components
@@ -53,30 +55,6 @@ ENV _JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForH
 # setup adb and dexcalibur server
 EXPOSE 5037 8000 31415
 
-
-# install and configure SSH server
-# EXPOSE 22
-# ADD sshd-banner /etc/ssh/
-# ADD authorized_keys /tmp/
-# RUN apt-get update -y && \
-#   apt-get install -y openssh-server supervisor locales && \
-#   mkdir -p /var/run/sshd /var/log/supervisord && \
-#   locale-gen en en_US en_US.UTF-8 && \
-#   FILE_SSHD_CONFIG="/etc/ssh/sshd_config" && \
-#   echo "\nBanner /etc/ssh/sshd-banner" >> $FILE_SSHD_CONFIG && \
-#   echo "\nPermitUserEnvironment=yes" >> $FILE_SSHD_CONFIG && \
-#   ssh-keygen -q -N "" -f /root/.ssh/id_rsa && \
-#   FILE_SSH_ENV="/root/.ssh/environment" && \
-#   touch $FILE_SSH_ENV && chmod 600 $FILE_SSH_ENV && \
-#   printenv | grep "JAVA_HOME\|GRADLE_HOME\|KOTLIN_HOME\|ANDROID_HOME\|LD_LIBRARY_PATH\|PATH" >> $FILE_SSH_ENV && \
-#   FILE_AUTH_KEYS="/root/.ssh/authorized_keys" && \
-#   touch $FILE_AUTH_KEYS && chmod 600 $FILE_AUTH_KEYS && \
-#   for file in /tmp/*.pub; \
-#   do if [ -f "$file" ]; then echo "\n" >> $FILE_AUTH_KEYS && cat $file >> $FILE_AUTH_KEYS && echo "\n" >> $FILE_AUTH_KEYS; fi; \
-#   done && \
-#   (rm /tmp/*.pub 2> /dev/null || true)
-# ADD supervisord.conf /etc/supervisor/conf.d/
-# CMD ["/usr/bin/supervisord"]
 
 
 # Install android tools + sdk
@@ -112,9 +90,8 @@ RUN mkdir /home/dexcalibur/platform-tools/ && \
 	unzip *.zip && \
 	rm *.zip 
 
-# Port forwarding required by dexcaliburs
 RUN echo 'adb forward tcp:31415 tcp:31415' >> /home/dexcalibur/.bashrc
 
 WORKDIR /home/dexcalibur/dexcalibur
 VOLUME ["/home/dexcalibur/workspace"]
-ENTRYPOINT ["/home/dexcalibur/dexcalibur/dexcalibur"]
+CMD ["/bin/sh"]
