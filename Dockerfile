@@ -77,8 +77,7 @@ RUN mkdir -p /home/dexcalibur/tools/apktool && \
 WORKDIR /home/dexcalibur
 
 
-# force rebuild : 1
-RUN git clone https://github.com/FrenchYeti/dexcalibur.git && \
+RUN git clone https://github.com/FrenchYeti/dexcalibur.git?1 && \
 	cd /home/dexcalibur/dexcalibur && \
 	/usr/bin/npm install
 	
