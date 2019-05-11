@@ -76,13 +76,14 @@ RUN mkdir -p /home/dexcalibur/tools/apktool && \
 # Setup Dexcalibur
 WORKDIR /home/dexcalibur
 
+
+# force rebuild : 1
 RUN git clone https://github.com/FrenchYeti/dexcalibur.git && \
 	cd /home/dexcalibur/dexcalibur && \
 	/usr/bin/npm install
 	
 ADD files/config.js dexcalibur/config.js
 
-# force rebuild : 1
 # install platform-tools
 RUN mkdir /home/dexcalibur/platform-tools/ && \ 
 	cd /home/dexcalibur/platform-tools/ && \
