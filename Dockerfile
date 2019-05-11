@@ -77,7 +77,7 @@ RUN mkdir -p /home/dexcalibur/tools/apktool && \
 WORKDIR /home/dexcalibur
 
 
-RUN git clone https://github.com/FrenchYeti/dexcalibur.git?1 && \
+RUN head -c 5 /dev/random > random_bytes && git clone https://github.com/FrenchYeti/dexcalibur.git && \
 	cd /home/dexcalibur/dexcalibur && \
 	/usr/bin/npm install
 	
