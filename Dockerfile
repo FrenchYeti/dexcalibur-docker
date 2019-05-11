@@ -2,8 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER @FrenchYeti "frenchyeti@protonmail.com"
 
 RUN useradd -ms /bin/bash dexcalibur
-
-
+ 
 # support multiarch: i386 architecture
 # install Java
 # install essential tools
@@ -83,6 +82,7 @@ RUN git clone https://github.com/FrenchYeti/dexcalibur.git && \
 	
 ADD files/config.js dexcalibur/config.js
 
+# force rebuild : 1
 # install platform-tools
 RUN mkdir /home/dexcalibur/platform-tools/ && \ 
 	cd /home/dexcalibur/platform-tools/ && \
